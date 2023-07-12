@@ -55,8 +55,7 @@ def ReadBabyBoom(filename='babyboom.dat'):
     variables.end += 1
     dct = thinkstats2.FixedWidthVariables(variables, index_base=1)
 
-    df = dct.ReadFixedWidth(filename, skiprows=59)
-    return df
+    return dct.ReadFixedWidth(filename, skiprows=59)
 
 
 def MakeBabyBoom():

@@ -72,8 +72,7 @@ def GenerateAdultWeight(birth_weights, n):
     """
     bw = random.choice(birth_weights)
     factors = np.random.normal(1.09, 0.03, n)
-    aw = bw * np.prod(factors)
-    return aw
+    return bw * np.prod(factors)
 
 
 def PlotAdultWeights(live):
@@ -141,11 +140,6 @@ def main():
 
     TestIntervention()
     return
-
-    live, firsts, others = first.MakeFrames()
-    PlotAdultWeights(live)
-
-    PlotPregLengths(live, firsts, others)
 
 
 if __name__ == '__main__':

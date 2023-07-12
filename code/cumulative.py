@@ -18,13 +18,8 @@ import thinkplot
 
 def PercentileRank(scores, your_score):
     """Computes the percentile rank relative to a sample of scores."""
-    count = 0
-    for score in scores:
-        if score <= your_score:
-            count += 1
-
-    percentile_rank = 100.0 * count / len(scores)
-    return percentile_rank
+    count = sum(1 for score in scores if score <= your_score)
+    return 100.0 * count / len(scores)
 
 scores = [55, 66, 77, 88, 99]
 your_score = 88
@@ -70,8 +65,7 @@ def EvalCdf(sample, x):
         if value <= x:
             count += 1.0
 
-    prob = count / len(sample)
-    return prob
+    return count / len(sample)
 
 sample = [1, 2, 2, 3, 5]
 
@@ -88,8 +82,7 @@ def PositionToPercentile(position, field_size):
     field_size: int
     """
     beat = field_size - position + 1
-    percentile = 100.0 * beat / field_size
-    return percentile
+    return 100.0 * beat / field_size
 
 
 def PercentileToPosition(percentile, field_size):
@@ -99,8 +92,7 @@ def PercentileToPosition(percentile, field_size):
     field_size: int
     """
     beat = percentile * field_size / 100.0
-    position = field_size - beat + 1
-    return position
+    return field_size - beat + 1
 
 
 # my time 42:44

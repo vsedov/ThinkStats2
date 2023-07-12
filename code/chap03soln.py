@@ -56,8 +56,7 @@ def Diffs(t):
     """
     first = t[0]
     rest = t[1:]
-    diffs = [first - x for x in rest]
-    return diffs
+    return [first - x for x in rest]
 
 
 def PairWiseDifferences(live):
@@ -101,7 +100,7 @@ def main(script):
     assert(var == pmf.Var())
     print('mean/var preg length', mean, var)
 
-    print('%s: All tests passed.' % script)
+    print(f'{script}: All tests passed.')
 
 
 if __name__ == '__main__':

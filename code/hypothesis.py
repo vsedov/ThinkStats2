@@ -29,8 +29,7 @@ class CoinTest(thinkstats2.HypothesisTest):
         data: data in whatever form is relevant        
         """
         heads, tails = data
-        test_stat = abs(heads - tails)
-        return test_stat
+        return abs(heads - tails)
 
     def RunModel(self):
         """Run the model of the null hypothesis.
@@ -54,8 +53,7 @@ class DiffMeansPermute(thinkstats2.HypothesisTest):
         data: data in whatever form is relevant        
         """
         group1, group2 = data
-        test_stat = abs(group1.mean() - group2.mean())
-        return test_stat
+        return abs(group1.mean() - group2.mean())
 
     def MakeModel(self):
         """Build a model of the null hypothesis.
@@ -70,8 +68,7 @@ class DiffMeansPermute(thinkstats2.HypothesisTest):
         returns: simulated data
         """
         np.random.shuffle(self.pool)
-        data = self.pool[:self.n], self.pool[self.n:]
-        return data
+        return self.pool[:self.n], self.pool[self.n:]
 
 
 class DiffMeansOneSided(DiffMeansPermute):
@@ -83,8 +80,7 @@ class DiffMeansOneSided(DiffMeansPermute):
         data: data in whatever form is relevant        
         """
         group1, group2 = data
-        test_stat = group1.mean() - group2.mean()
-        return test_stat
+        return group1.mean() - group2.mean()
 
 
 class DiffStdPermute(DiffMeansPermute):
@@ -96,8 +92,7 @@ class DiffStdPermute(DiffMeansPermute):
         data: data in whatever form is relevant        
         """
         group1, group2 = data
-        test_stat = group1.std() - group2.std()
-        return test_stat
+        return group1.std() - group2.std()
 
 
 class CorrelationPermute(thinkstats2.HypothesisTest):
@@ -109,8 +104,7 @@ class CorrelationPermute(thinkstats2.HypothesisTest):
         data: tuple of xs and ys
         """
         xs, ys = data
-        test_stat = abs(thinkstats2.Corr(xs, ys))
-        return test_stat
+        return abs(thinkstats2.Corr(xs, ys))
 
     def RunModel(self):
         """Run the model of the null hypothesis.
@@ -133,8 +127,7 @@ class DiceTest(thinkstats2.HypothesisTest):
         observed = data
         n = sum(observed)
         expected = np.ones(6) * n / 6
-        test_stat = sum(abs(observed - expected))
-        return test_stat
+        return sum(abs(observed - expected))
 
     def RunModel(self):
         """Run the model of the null hypothesis.
@@ -145,8 +138,7 @@ class DiceTest(thinkstats2.HypothesisTest):
         values = [1,2,3,4,5,6]
         rolls = np.random.choice(values, n, replace=True)
         hist = thinkstats2.Hist(rolls)
-        freqs = hist.Freqs(values)
-        return freqs
+        return hist.Freqs(values)
 
 
 class DiceChiTest(DiceTest):
@@ -160,8 +152,7 @@ class DiceChiTest(DiceTest):
         observed = data
         n = sum(observed)
         expected = np.ones(6) * n / 6
-        test_stat = sum((observed - expected)**2 / expected)
-        return test_stat
+        return sum((observed - expected)**2 / expected)
 
 
 class PregLengthTest(thinkstats2.HypothesisTest):
@@ -173,8 +164,7 @@ class PregLengthTest(thinkstats2.HypothesisTest):
         data: pair of lists of pregnancy lengths
         """
         firsts, others = data
-        stat = self.ChiSquared(firsts) + self.ChiSquared(others)
-        return stat
+        return self.ChiSquared(firsts) + self.ChiSquared(others)
 
     def ChiSquared(self, lengths):
         """Computes the chi-squared statistic.
@@ -186,8 +176,7 @@ class PregLengthTest(thinkstats2.HypothesisTest):
         hist = thinkstats2.Hist(lengths)
         observed = np.array(hist.Freqs(self.values))
         expected = self.expected_probs * len(lengths)
-        stat = sum((observed - expected)**2 / expected)
-        return stat
+        return sum((observed - expected)**2 / expected)
 
     def MakeModel(self):
         """Build a model of the null hypothesis.
@@ -206,8 +195,7 @@ class PregLengthTest(thinkstats2.HypothesisTest):
         returns: simulated data
         """
         np.random.shuffle(self.pool)
-        data = self.pool[:self.n], self.pool[self.n:]
-        return data
+        return self.pool[:self.n], self.pool[self.n:]
 
 
 def RunDiceTest():
@@ -231,7 +219,7 @@ def FalseNegRate(data, num_runs=1000):
     group1, group2 = data
     count = 0
 
-    for i in range(num_runs):
+    for _ in range(num_runs):
         sample1 = thinkstats2.Resample(group1)
         sample2 = thinkstats2.Resample(group2)
         ht = DiffMeansPermute((sample1, sample2))

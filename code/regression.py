@@ -245,10 +245,9 @@ def RunModels(live):
     columns = ['isfirst[T.True]', 'agepreg', 'agepreg2']
     header = ['isfirst', 'agepreg', 'agepreg2']
 
-    rows = []
     formula = 'totalwgt_lb ~ isfirst'
     results = smf.ols(formula, data=live).fit()
-    rows.append(FormatRow(results, columns))
+    rows = [FormatRow(results, columns)]
     print(formula)
     SummarizeResults(results)
 
@@ -257,20 +256,20 @@ def RunModels(live):
     rows.append(FormatRow(results, columns))
     print(formula)
     SummarizeResults(results)
-    
+
     formula = 'totalwgt_lb ~ isfirst + agepreg'
     results = smf.ols(formula, data=live).fit()
     rows.append(FormatRow(results, columns))
     print(formula)
     SummarizeResults(results)
-    
+
     live['agepreg2'] = live.agepreg**2
     formula = 'totalwgt_lb ~ isfirst + agepreg + agepreg2'
     results = smf.ols(formula, data=live).fit()
     rows.append(FormatRow(results, columns))
     print(formula)
     SummarizeResults(results)
-    
+
     PrintTabular(rows, header)
 
 

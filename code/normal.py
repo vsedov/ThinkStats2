@@ -222,8 +222,7 @@ def GenerateExpoCorrelated(rho, n):
     """
     normal = list(GenerateCorrelated(rho, n))
     uniform = scipy.stats.norm.cdf(normal)
-    expo = scipy.stats.expon.ppf(uniform)
-    return expo
+    return scipy.stats.expon.ppf(uniform)
 
 
 def MakeCorrelatedSamples(rho=0.9, iters=1000):

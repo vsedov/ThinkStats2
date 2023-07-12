@@ -43,11 +43,7 @@ def Diff(t):
     Returns:
       list of whatever is in t
     """
-    diffs = []
-    for i in range(len(t)-1):
-        diff = t[i+1] - t[i]
-        diffs.append(diff)
-    return diffs
+    return [t[i+1] - t[i] for i in range(len(t)-1)]
 
 
 def Main(script):

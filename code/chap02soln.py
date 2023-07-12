@@ -21,7 +21,7 @@ def Mode(hist):
 
     returns: value from Hist
     """
-    p, x = max([(p, x) for x, p in hist.Items()])
+    p, x = max((p, x) for x, p in hist.Items())
     return x
 
 
@@ -90,7 +90,7 @@ def main(script):
     for value, freq in modes[:5]:
         print(value, freq)
 
-    print('%s: All tests passed.' % script)
+    print(f'{script}: All tests passed.')
 
 
 if __name__ == '__main__':

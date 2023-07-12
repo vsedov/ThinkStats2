@@ -471,13 +471,8 @@ def Pmf(pmf, **options):
     lasty = 0
     for x, y in zip(xs, ys):
         if (x - lastx) > 1e-5:
-            points.append((lastx, 0))
-            points.append((x, 0))
-
-        points.append((x, lasty))
-        points.append((x, y))
-        points.append((x+width, y))
-
+            points.extend(((lastx, 0), (x, 0)))
+        points.extend(((x, lasty), (x, y), (x+width, y)))
         lastx = x + width
         lasty = y
     points.append((lastx, 0))
@@ -516,8 +511,7 @@ def Diff(t):
     Returns:
         sequence of differences (length one less than t)
     """
-    diffs = [t[i+1] - t[i] for i in range(len(t)-1)]
-    return diffs
+    return [t[i+1] - t[i] for i in range(len(t)-1)]
 
 
 def Cdf(cdf, complement=False, transform=None, **options):
@@ -795,11 +789,11 @@ def Save(root=None, formats=None, **options):
     """
     clf = options.pop('clf', True)
 
-    save_options = {}
-    for option in ['bbox_inches', 'pad_inches']:
-        if option in options:
-            save_options[option] = options.pop(option)
-
+    save_options = {
+        option: options.pop(option)
+        for option in ['bbox_inches', 'pad_inches']
+        if option in options
+    }
     # TODO: falling Config inside Save was probably a mistake, but removing
     # it will require some work
     Config(**options)
@@ -851,7 +845,7 @@ def SaveFormat(root, fmt='eps', **options):
       fmt: string format
     """
     _Underride(options, dpi=300)
-    filename = '%s.%s' % (root, fmt)
+    filename = f'{root}.{fmt}'
     print('Writing', filename)
     plt.savefig(filename, format=fmt, **options)
 

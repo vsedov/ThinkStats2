@@ -143,14 +143,11 @@ def Correlations(df):
 
 def main(script):
     thinkstats2.RandomSeed(17)
-    
+
     df = brfss.ReadBrfss(nrows=None)
     df = df.dropna(subset=['htm3', 'wtkg2'])
     Correlations(df)
     return
-
-    MakeFigures(df)
-    BinnedPercentiles(df)
     
 
 if __name__ == '__main__':

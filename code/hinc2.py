@@ -42,9 +42,7 @@ def InterpolateSample(df, log_upper=6.0):
         vals = np.linspace(row.log_lower, row.log_upper, row.freq)
         arrays.append(vals)
 
-    # collect the arrays into a single sample
-    log_sample = np.concatenate(arrays)
-    return log_sample
+    return np.concatenate(arrays)
 
 
 def main():

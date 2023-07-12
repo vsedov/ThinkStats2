@@ -228,8 +228,7 @@ def ResampleRowsWeighted(df, attr='finalwgt'):
     weights = df[attr]
     cdf = thinkstats2.Pmf(weights).MakeCdf()
     indices = cdf.Sample(len(weights))
-    sample = df.loc[indices]
-    return sample
+    return df.loc[indices]
 
 
 def EstimateBirthWeight(live, iters=1001):

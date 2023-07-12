@@ -41,7 +41,7 @@ def ReadIncomeFile(filename='08in11si.csv'):
     for line in reader:
         if line[0].startswith('Accumulated'):
             break
-        t.append(line[0:2])
+        t.append(line[:2])
 
     return t
 

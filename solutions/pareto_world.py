@@ -19,9 +19,7 @@ from collections import Counter
 
 def ParetoCdf(x, alpha, xmin):
     """Evaluates CDF of the Pareto distribution with parameters alpha, xmin."""
-    if x < xmin:
-        return 0
-    return 1 - pow(x / xmin, -alpha)
+    return 0 if x < xmin else 1 - pow(x / xmin, -alpha)
 
 
 def ParetoMedian(xmin, alpha):
@@ -60,10 +58,10 @@ def MakeFigure(xmin=100, alpha=1.7, mu=150, sigma=25):
     sigma: parameter of the Normal distribution
     """
 
-    t1 = [xmin * random.paretovariate(alpha) for i in range(10000)]
+    t1 = [xmin * random.paretovariate(alpha) for _ in range(10000)]
     cdf1 = Cdf.MakeCdfFromList(t1, name='pareto')
 
-    t2 = [random.normalvariate(mu, sigma) for i in range(10000)]
+    t2 = [random.normalvariate(mu, sigma) for _ in range(10000)]
     cdf2 = Cdf.MakeCdfFromList(t2, name='normal')
 
     myplot.Clf()
@@ -83,8 +81,8 @@ def TallestPareto(iters=2, n=10000, xmin=100, alpha=1.7):
     alpha: parameter of the Pareto distribution
     """
     tallest = 0
-    for i in range(iters):
-        t = [xmin * random.paretovariate(alpha) for i in range(n)]
+    for _ in range(iters):
+        t = [xmin * random.paretovariate(alpha) for _ in range(n)]
         tallest = max(max(t), tallest)
     return tallest
 
@@ -97,27 +95,12 @@ def ParetoSample(alpha, xmin, n):
 def main():
     
     counter = Counter()
-    for i in range(10000):
+    for _ in range(10000):
         sample = ParetoSample(1.7, 0.001, 10000)
-        counter.update(Counter(sample))
+        counter |= Counter(sample)
 
     print(len(counter))
     return
-
-    pmf = thinkstats2.Pmf(counter)
-    print('mean', pmf.Mean())
-    for x, prob in pmf.Largest(10):
-        print(x)
-
-    cdf = thinkstats2.Cdf(pmf)
-    thinkplot.Cdf(cdf, complement=True)
-    thinkplot.Show(xscale='log',
-                   yscale='log')
-    return
-
-    MakeFigure()
-    MakeParetoCdf()
-    print(TallestPareto(iters=2))
 
 
 if __name__ == "__main__":

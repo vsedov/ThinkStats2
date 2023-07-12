@@ -152,7 +152,7 @@ def main(script, nrows=1000):
     """
     thinkstats2.RandomSeed(17)
 
-    nrows = int(nrows)    
+    nrows = int(nrows)
     df = ReadBrfss(nrows=nrows)
     MakeFigures(df)
 
@@ -167,7 +167,7 @@ def main(script, nrows=1000):
         assert(df.wtyrago.value_counts()[160/2.2] == 49)
         assert(df.htm3.value_counts()[163] == 103)
         assert(df.finalwt.value_counts()[185.870345] == 13)
-        print('%s: All tests passed.' % script)
+        print(f'{script}: All tests passed.')
 
 
 if __name__ == '__main__':

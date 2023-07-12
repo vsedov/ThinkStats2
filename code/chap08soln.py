@@ -113,7 +113,7 @@ def Estimate1(n=7, m=100000):
     means = []
     medians = []
     for _ in range(m):
-        xs = [random.gauss(mu, sigma) for i in range(n)]
+        xs = [random.gauss(mu, sigma) for _ in range(n)]
         xbar = np.mean(xs)
         median = np.median(xs)
         means.append(xbar)
@@ -136,7 +136,7 @@ def Estimate2(n=7, m=100000):
     estimates1 = []
     estimates2 = []
     for _ in range(m):
-        xs = [random.gauss(mu, sigma) for i in range(n)]
+        xs = [random.gauss(mu, sigma) for _ in range(n)]
         biased = np.var(xs)
         unbiased = np.var(xs, ddof=1)
         estimates1.append(biased)
@@ -196,22 +196,20 @@ def SimulateGame(lam):
             break
         goals += 1
 
-    # estimated goal-scoring rate is the actual number of goals scored
-    L = goals
-    return L
+    return goals
 
 
 def Estimate4(lam=2, m=1000000):
 
     estimates = []
-    for i in range(m):
+    for _ in range(m):
         L = SimulateGame(lam)
         estimates.append(L)
 
     print('Experiment 4')
     print('rmse L', RMSE(estimates, lam))
     print('mean error L', MeanError(estimates, lam))
-    
+
     pmf = thinkstats2.Pmf(estimates)
 
     thinkplot.Hist(pmf)

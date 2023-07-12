@@ -100,7 +100,7 @@ def main(script):
     key = max(weights.keys())
     assert df.finalwgt.value_counts()[key] == 6
 
-    print('%s: All tests passed.' % script)
+    print(f'{script}: All tests passed.')
 
 if __name__ == '__main__':
     main(*sys.argv)

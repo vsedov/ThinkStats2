@@ -25,8 +25,7 @@ def ConvertPaceToSpeed(pace):
     """Converts pace in MM:SS per mile to MPH."""
     m, s = [int(x) for x in pace.split(':')]
     secs = m*60 + s
-    mph  = 1 / secs * 60 * 60 
-    return mph
+    return 1 / secs * 60 * 60
 
 
 def CleanLine(line):
@@ -34,25 +33,23 @@ def CleanLine(line):
     t = line.split()
     if len(t) < 6:
         return None
-    
-    place, divtot, div, gun, net, pace = t[0:6]
 
-    if not '/' in divtot:
+    place, divtot, div, gun, net, pace = t[:6]
+
+    if '/' not in divtot:
         return None
 
-    for time in [gun, net, pace]:
-        if ':' not in time:
-            return None
-
-    return place, divtot, div, gun, net, pace
+    return next(
+        (None for time in [gun, net, pace] if ':' not in time),
+        (place, divtot, div, gun, net, pace),
+    )
 
 
 def ReadResults(filename='Apr25_27thAn_set1.shtml'):
     """Read results from a file and return a list of tuples."""
     results = []
     for line in open(filename):
-        t = CleanLine(line)
-        if t:
+        if t := CleanLine(line):
             results.append(t)
     return results
 

@@ -99,8 +99,7 @@ class SerialCorrelationTest(thinkstats2.HypothesisTest):
         data: tuple of xs and ys
         """
         series, lag = data
-        test_stat = abs(thinkstats2.SerialCorr(series, lag))
-        return test_stat
+        return abs(thinkstats2.SerialCorr(series, lag))
 
     def RunModel(self):
         """Run the model of the null hypothesis.

@@ -173,8 +173,7 @@ class HazardFunction(object):
         """
         ts = self.series.index
         ss = (1 - self.series).cumprod()
-        sf = SurvivalFunction(ts, ss, label=label)
-        return sf
+        return SurvivalFunction(ts, ss, label=label)
 
     def Extend(self, other):
         """Extends this hazard function by copying the tail from another.
@@ -292,9 +291,7 @@ def EstimateHazardFunction(complete, ongoing, label='', verbose=False):
     hist_complete = Counter(complete)
     hist_ongoing = Counter(ongoing)
 
-    ts = list(hist_complete | hist_ongoing)
-    ts.sort()
-
+    ts = sorted(hist_complete | hist_ongoing)
     at_risk = len(complete) + len(ongoing)
 
     lams = pd.Series(index=ts)
@@ -477,8 +474,7 @@ def PlotPregnancyData(preg):
                    formats=FORMATS)
 
     hf = EstimateHazardFunction(complete, ongoing)
-    sf = hf.MakeSurvival()
-    return sf
+    return hf.MakeSurvival()
 
 
 def PlotRemainingLifetime(sf1, sf2):
@@ -622,8 +618,7 @@ def ReadFemResp(dct_file='2002FemResp.dct',
     returns: DataFrame
     """
     dct = thinkstats2.ReadStataDct(dct_file, encoding='iso-8859-1')
-    df = dct.ReadFixedWidth(dat_file, compression='gzip', **options)
-    return df
+    return dct.ReadFixedWidth(dat_file, compression='gzip', **options)
 
 
 def CleanFemResp(resp):

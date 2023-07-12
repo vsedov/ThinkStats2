@@ -33,11 +33,9 @@ class FixedWidthVariables(object):
 
         returns: DataFrame
         """
-        df = pd.read_fwf(filename,
-                             colspecs=self.colspecs,
-                             names=self.names,
-                             **options)
-        return df
+        return pd.read_fwf(
+            filename, colspecs=self.colspecs, names=self.names, **options
+        )
 
 
 def read_stata_dict(dct_file, **options):
@@ -57,14 +55,11 @@ def read_stata_dict(dct_file, **options):
             match = re.search( r'_column\(([^)]*)\)', line)
             if not match:
                 continue
-            start = int(match.group(1))
+            start = int(match[1])
             t = line.split()
             vtype, name, fstring = t[1:4]
             name = name.lower()
-            if vtype.startswith('str'):
-                vtype = str
-            else:
-                vtype = type_map[vtype]
+            vtype = str if vtype.startswith('str') else type_map[vtype]
             long_desc = ' '.join(t[4:]).strip('"')
             var_info.append((start, vtype, name, fstring, long_desc))
 
@@ -75,8 +70,7 @@ def read_stata_dict(dct_file, **options):
     variables['end'] = variables.start.shift(-1)
     variables.loc[len(variables)-1, 'end'] = 0
 
-    dct = FixedWidthVariables(variables, index_base=1)
-    return dct
+    return FixedWidthVariables(variables, index_base=1)
 
 
 def read_stata(dct_name, dat_name, **options):
@@ -87,8 +81,7 @@ def read_stata(dct_name, dat_name, **options):
     returns: DataFrame
     """
     dct = read_stata_dict(dct_name)
-    df = dct.read_fixed_width(dat_name, **options)
-    return df
+    return dct.read_fixed_width(dat_name, **options)
 
 
 def sample_rows(df, nrows, replace=False):
@@ -101,8 +94,7 @@ def sample_rows(df, nrows, replace=False):
     returns: DataDf
     """
     indices = np.random.choice(df.index, nrows, replace=replace)
-    sample = df.loc[indices]
-    return sample
+    return df.loc[indices]
 
 
 def resample_rows(df):
@@ -126,8 +118,7 @@ def resample_rows_weighted(df, column='finalwgt'):
     weights = df[column].copy()
     weights /= sum(weights)
     indices = np.random.choice(df.index, len(df), replace=True, p=weights)
-    sample = df.loc[indices]
-    return sample
+    return df.loc[indices]
 
 
 def resample_by_year(df, column='wtssall'):
@@ -141,8 +132,7 @@ def resample_by_year(df, column='wtssall'):
     grouped = df.groupby('year')
     samples = [resample_rows_weighted(group, column)
                for _, group in grouped]
-    sample = pd.concat(samples, ignore_index=True)
-    return sample
+    return pd.concat(samples, ignore_index=True)
 
 
 def values(df, varname):

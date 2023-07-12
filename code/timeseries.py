@@ -26,8 +26,7 @@ def ReadData():
 
     returns: DataFrame
     """
-    transactions = pandas.read_csv('mj-clean.csv', parse_dates=[5])
-    return transactions
+    return pandas.read_csv('mj-clean.csv', parse_dates=[5])
 
 
 def tmean(series):
@@ -71,11 +70,7 @@ def GroupByQualityAndDay(transactions):
     returns: map from quality to time series of ppg
     """
     groups = transactions.groupby('quality')
-    dailies = {}
-    for name, group in groups:
-        dailies[name] = GroupByDay(group)        
-
-    return dailies
+    return {name: GroupByDay(group) for name, group in groups}
 
 
 def PlotDailies(dailies):
@@ -351,12 +346,12 @@ def RunModels(dailies):
     dailies: map from group name to DataFrame
     """
     rows = []
+    s = r'%0.3f (%0.2g) & %0.3f (%0.2g) & %0.3f \\'
     for daily in dailies.values():
         _, results = RunLinearModel(daily)
         intercept, slope = results.params
         p1, p2 = results.pvalues
         r2 = results.rsquared
-        s = r'%0.3f (%0.2g) & %0.3f (%0.2g) & %0.3f \\'
         row = s % (intercept, p1, slope, p2, r2)
         rows.append(row)
 
@@ -412,10 +407,9 @@ def PrintSerialCorrelations(dailies):
 
     dailies: map from category name to DataFrame of daily prices
     """
-    filled_dailies = {}
-    for name, daily in dailies.items():
-        filled_dailies[name] = FillMissing(daily, span=30)
-
+    filled_dailies = {
+        name: FillMissing(daily, span=30) for name, daily in dailies.items()
+    }
     # print serial correlations for raw price data
     for name, filled in filled_dailies.items():            
         corr = thinkstats2.SerialCorr(filled.ppg, lag=1)
@@ -424,7 +418,7 @@ def PrintSerialCorrelations(dailies):
     rows = []
     for lag in [1, 7, 30, 365]:
         row = [str(lag)]
-        for name, filled in filled_dailies.items():            
+        for filled in filled_dailies.values():
             corr = thinkstats2.SerialCorr(filled.resid, lag)
             row.append('%.2g' % corr)
         rows.append(row)
